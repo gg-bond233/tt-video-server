@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ggbond.ttvideo.mapper.BannerMapper">
+
+    <!-- 管理端分页查询轮播图，LEFT JOIN tb_video 填充关联视频信息 -->
+    <select id="selectBannerVOPage" resultType="cn.ggbond.ttvideo.model.vo.BannerVO">
+        SELECT
+            b.id            AS bannerId,
+            b.banner_url    AS bannerUrl,
+            b.status        AS bannerStatus,
+            b.video_id      AS videoId,
+            v.name          AS title,
+            v.category      AS category,
+            v.uploader_name AS uploader
+        FROM tb_banner b
+        LEFT JOIN tb_video v ON b.video_id = v.id
+        <where>
+            <if test="status != null">
+                AND b.status = #{status}
+            </if>
+        </where>
+        ORDER BY b.id DESC
+    </select>
+
+</mapper>
